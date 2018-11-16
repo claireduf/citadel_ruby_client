@@ -45,10 +45,11 @@ module Citadel
 
     def list_all_public_rooms
       response = all_public_rooms_response
-      room_count = JSON.parse(response.body)['total_room_count_estimate'] - 2
+      array = JSON.parse(response.body)['chunk']
+      count = array.size - 1
       result = []
-      (0..room_count).each do |i|
-        result << JSON.parse(response.body)['chunk'][i]['room_id']
+      (0..count).each do |i|
+        result << array[i]['room_id']
       end
       result
     end

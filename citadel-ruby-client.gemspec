@@ -4,7 +4,7 @@ require 'citadel-ruby-client/version'
 Gem::Specification.new do |s|
   s.name        = 'citadel-ruby-client'
   s.version     = Citadel::VERSION
-  s.date        = '2018-10-17'
+  s.date        = Citadel::DATE
   s.summary     = 'Citadel Ruby client'
   s.description = 'A simple way to publish messages on Citadel'
   s.authors     = ['Claire Dufetrelle']

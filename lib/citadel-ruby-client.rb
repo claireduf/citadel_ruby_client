@@ -47,7 +47,7 @@ module Citadel
       response = all_public_rooms_response
       room_count = JSON.parse(response.body)['total_room_count_estimate'] - 2
       result = []
-      (0..room_count).each do
+      (0..room_count).each do |i|
         result << JSON.parse(response.body)['chunk'][i]['room_id']
       end
       result

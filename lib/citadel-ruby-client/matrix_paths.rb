@@ -23,7 +23,7 @@ module Citadel
     end
 
     def list_public_rooms_path
-      '/publicRooms' + '?limit=' + Citadel.public_rooms_limit
+      '/publicRooms' + '?limit=' + Citadel.public_rooms_limit.to_s
     end
 
     def list_joined_rooms_path

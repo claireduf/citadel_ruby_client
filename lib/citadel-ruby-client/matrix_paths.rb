@@ -2,7 +2,6 @@
 
 module Citadel
   class MatrixPaths
-
     def base_uri
       Citadel.tenant_url + '/_matrix/client/r0'
     end

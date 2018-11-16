@@ -7,7 +7,6 @@ require 'citadel-ruby-client/matrix_paths'
 require 'citadel-ruby-client/matrix_interceptor'
 
 module Citadel
-
   DEFAULT_PUBLIC_ROOMS_LIMIT = 100
 
   class << self
@@ -16,11 +15,11 @@ module Citadel
 
   class Client
     def initialize(tenant_url, public_rooms_limit = DEFAULT_PUBLIC_ROOMS_LIMIT)
-      if tenant_url[-1,1] == '/'
-        Citadel.tenant_url = tenant_url[0,tenant_url.length-1]
-      else
-        Citadel.tenant_url = tenant_url
-      end
+      Citadel.tenant_url = if tenant_url[-1, 1] == '/'
+                             tenant_url[0, tenant_url.length - 1]
+                           else
+                             tenant_url
+                           end
       Citadel.public_rooms_limit = public_rooms_limit
     end
 
@@ -30,8 +29,9 @@ module Citadel
 
     def auth_token
       return @auth_token if defined? @auth_token
+
       puts 'Citadel: You need to sign in'
-      return nil
+      nil
     end
 
     def sign_in(login, password)
@@ -78,13 +78,13 @@ module Citadel
     def create_room(room_name, topic)
       matrix_paths = MatrixPaths.new
       url = matrix_paths.base_uri + matrix_paths.create_room_path
-      room_name_alias = room_name.gsub!(' ','_')
+      room_name_alias = room_name.tr!(' ', '_')
       data_hash = { creation_content: { 'm.federate': false },
                     name: room_name,
                     preset: 'public_chat',
                     visibility: 'public',
                     room_alias_name: room_name_alias,
-                    topic: topic}
+                    topic: topic }
       data = JSON.generate data_hash
 
       response = HTTP.auth(auth_token).post(url, body: data)
@@ -102,7 +102,6 @@ module Citadel
     ########
 
     def send_message(room_id, message)
-
       matrix_paths = MatrixPaths.new
       randomizer = Random.new
       txn = randomizer.rand(100)
@@ -130,7 +129,6 @@ module Citadel
     end
 
     def invite_in_room(room_id, user_id)
-
       matrix_paths = MatrixPaths.new
       url = matrix_paths.base_uri + matrix_paths.invite_in_room_path(room_id)
       data_hash = { user_id: user_id }
